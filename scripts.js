@@ -1,57 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Get elements
     const moreInfoButton = document.getElementById('more-info');
     const scriptsButton = document.getElementById('scripts');
-    const closePopupButton = document.getElementById('close-popup');
-    const popup = document.getElementById('popup');
-
     const haxhubPaidButton = document.getElementById('haxhub-paid');
+    const closePopupButton = document.getElementById('close-popup');
     const closeHaxhubPopupButton = document.getElementById('close-haxhub-popup');
+    
+    const popup = document.getElementById('popup');
     const haxhubPopup = document.getElementById('haxhub-popup');
-
-    // Show the scripts popup
-    scriptsButton.addEventListener('click', (e) => {
-        e.preventDefault();
+    
+    const scriptListItems = document.querySelectorAll('#script-list li');
+    
+    moreInfoButton.addEventListener('click', () => {
         popup.style.display = 'block';
     });
-
-    // Show the HaxHub popup
-    haxhubPaidButton.addEventListener('click', (e) => {
-        e.preventDefault();
+    
+    scriptsButton.addEventListener('click', () => {
+        popup.style.display = 'block';
+    });
+    
+    haxhubPaidButton.addEventListener('click', () => {
         haxhubPopup.style.display = 'block';
     });
-
-    // Close the scripts popup
+    
     closePopupButton.addEventListener('click', () => {
         popup.style.display = 'none';
     });
-
-    // Close the HaxHub popup
+    
     closeHaxhubPopupButton.addEventListener('click', () => {
         haxhubPopup.style.display = 'none';
     });
 
-    // Close the popups when clicking outside
-    window.addEventListener('click', (e) => {
-        if (e.target === popup) {
-            popup.style.display = 'none';
-        }
-        if (e.target === haxhubPopup) {
-            haxhubPopup.style.display = 'none';
-        }
-    });
-
-    // Add click event to each script list item
-    const scriptList = document.getElementById('script-list');
-    const scriptItems = scriptList.getElementsByTagName('li');
-    for (let i = 0; i < scriptItems.length; i++) {
-        scriptItems[i].addEventListener('click', () => {
-            const scriptCode = scriptItems[i].getAttribute('data-script');
-            navigator.clipboard.writeText(scriptCode).then(() => {
-                alert('Script copied to clipboard');
-            }, () => {
-                alert('Failed to copy script');
+    scriptListItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const script = item.getAttribute('data-script');
+            navigator.clipboard.writeText(script).then(() => {
+                const originalText = item.textContent;
+                item.textContent = 'Copied!';
+                setTimeout(() => {
+                    item.textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
             });
         });
-    }
+    });
 });
