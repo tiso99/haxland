@@ -5,136 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>➥ 𝘏𝘈𝘟 𝘓𝘢𝘯𝘥</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Basic styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #121212;
-            color: #ffffff;
-        }
-
-        header {
-            background-color: #1e1e1e;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        h1 {
-            margin: 0;
-        }
-
-        .login-button a {
-            color: #ffffff;
-            background-color: #7289da;
-            padding: 10px;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-
-        .intro, .main-content, .announcements {
-            padding: 20px;
-        }
-
-        .main-content {
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .card {
-            background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 5px;
-            width: 45%;
-        }
-
-        .card h3 {
-            margin-top: 0;
-        }
-
-        .card a {
-            display: block;
-            margin: 10px 0;
-            padding: 10px;
-            text-align: center;
-            color: #ffffff;
-            background-color: #7289da;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-
-        .announcements .announcement-items {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .announcement-item {
-            background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 5px;
-            margin: 10px;
-            width: calc(33% - 40px);
-        }
-
-        footer {
-            background-color: #1e1e1e;
-            padding: 10px;
-            text-align: center;
-        }
-
-        /* Popup styles */
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 5px;
-            width: 50%;
-            max-height: 80%;
-            overflow-y: auto;
-        }
-
-        .popup h3 {
-            margin-top: 0;
-        }
-
-        .popup ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .popup ul li {
-            padding: 10px;
-            margin: 5px 0;
-            background-color: #333;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .popup .buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-
-        .popup .buttons button {
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .popup .close {
-            background-color: #ff4d4d;
-            color: #fff;
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -147,7 +17,7 @@
     </header>
     <section class="intro">
         <h2>Welcome to ➥ 𝘏𝘈𝘟 𝘓𝘢𝘯𝘥</h2>
-        <p>Home of the coolest roblox scripts to find!</p>
+        <p>Home of the coolest Roblox scripts to find!</p>
     </section>
     <section class="main-content">
         <div class="card premium">
@@ -156,8 +26,8 @@
             <a href="#" id="scripts">Scripts</a>
         </div>
         <div class="card dashboard">
-            <h3>Dashboard</h3>
-            <a href="#">Visit Dashboard</a>
+            <h3>HaxHub -- Paid</h3>
+            <a href="#" id="haxhub-paid">More Info</a>
         </div>
     </section>
     <section class="announcements">
@@ -189,7 +59,7 @@
         <h3>Scripts List</h3>
         <ul id="script-list">
             <!-- Add your list items here -->
-            <li data-script="loadstring(game:HttpGet("https://raw.githubusercontent.com/Actyrn/Scripts/main/AzureModded"))()">Azure Modded</li>
+            <li data-script="loadstring(game:HttpGet('https://raw.githubusercontent.com/Actyrn/Scripts/main/AzureModded'))()">Azure Modded</li>
             <li data-script="Test">Copies Test</li>
             <li data-script="Test">Copies Test</li>
         </ul>
@@ -198,38 +68,15 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const moreInfoButton = document.getElementById('more-info');
-            const scriptsButton = document.getElementById('scripts');
-            const popup = document.getElementById('popup');
-            const closePopupButton = document.getElementById('close-popup');
-            const scriptListItems = document.querySelectorAll('#script-list li');
+    <div class="popup" id="haxhub-popup">
+        <h3>HaxHub -- Paid</h3>
+        <p>HaxHub is the hub YOU need with tons of features. We have more features to come so stay tuned!</p>
+        <div class="buttons">
+            <a href="discord.gg/haxland" class="btn" id="haxhub-link">Buy HaxHub -- Make A Ticket</a>
+            <button class="close" id="close-haxhub-popup">Close</button>
+        </div>
+    </div>
 
-            function showPopup() {
-                popup.style.display = 'block';
-            }
-
-            function hidePopup() {
-                popup.style.display = 'none';
-            }
-
-            moreInfoButton.addEventListener('click', showPopup);
-            scriptsButton.addEventListener('click', showPopup);
-            closePopupButton.addEventListener('click', hidePopup);
-
-            scriptListItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const scriptContent = this.getAttribute('data-script');
-                    navigator.clipboard.writeText(scriptContent).then(() => {
-                        item.innerHTML = 'Copied!';
-                        setTimeout(() => {
-                            item.innerHTML = scriptContent;
-                        }, 3000);
-                    });
-                });
-            });
-        });
-    </script>
+    <script src="scripts.js"></script>
 </body>
 </html>
