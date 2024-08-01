@@ -18,15 +18,18 @@ body {
 header {
     width: 100%;
     padding: 20px;
-    background: #333;
+    background: linear-gradient(90deg, rgba(58,58,58,1) 0%, rgba(34,34,34,1) 100%);
     border-radius: 8px;
     text-align: center;
     margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .header-content h1 {
     font-size: 2.5em;
     margin-bottom: 10px;
+    color: #ffcc00;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .login-button a {
@@ -36,6 +39,7 @@ header {
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .login-button a:hover {
@@ -50,6 +54,7 @@ header {
     padding: 20px;
     margin-bottom: 20px;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .intro h2 {
@@ -64,6 +69,7 @@ header {
 .main-content {
     display: flex;
     justify-content: space-around;
+    gap: 20px;
 }
 
 .card {
@@ -72,6 +78,11 @@ header {
     border-radius: 8px;
     width: 45%;
     transition: transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover {
+    transform: scale(1.05);
 }
 
 .card h3 {
@@ -109,6 +120,7 @@ header {
     background: #3a3a3a;
     padding: 20px;
     border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .announcement-item h3 {
@@ -136,59 +148,4 @@ footer {
     width: 80%;
     max-width: 500px;
     z-index: 1000;
-}
-
-.popup h3 {
-    font-size: 1.5em;
-    margin-bottom: 20px;
-}
-
-.popup ul {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 20px;
-}
-
-.popup ul li {
-    margin-bottom: 10px;
-    padding: 10px;
-    background: #292929;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.popup ul li:hover {
-    background: #404040;
-}
-
-.buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.buttons .btn, .buttons .close {
-    padding: 10px 20px;
-    background-color: #7289da;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.buttons .btn:hover, .buttons .close:hover {
-    background-color: #5a6fa6;
-}
-
-/* Overlay */
-.overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 999;
-}
+    box-shadow
