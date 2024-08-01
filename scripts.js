@@ -1,47 +1,39 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const moreInfoButton = document.getElementById('more-info');
-    const scriptsButton = document.getElementById('scripts');
-    const haxhubPaidButton = document.getElementById('haxhub-paid');
-    const closePopupButton = document.getElementById('close-popup');
-    const closeHaxhubPopupButton = document.getElementById('close-haxhub-popup');
-    
-    const popup = document.getElementById('popup');
-    const haxhubPopup = document.getElementById('haxhub-popup');
-    
-    const scriptListItems = document.querySelectorAll('#script-list li');
-    
-    moreInfoButton.addEventListener('click', () => {
-        popup.style.display = 'block';
-    });
-    
-    scriptsButton.addEventListener('click', () => {
-        popup.style.display = 'block';
-    });
-    
-    haxhubPaidButton.addEventListener('click', () => {
-        haxhubPopup.style.display = 'block';
-    });
-    
-    closePopupButton.addEventListener('click', () => {
-        popup.style.display = 'none';
-    });
-    
-    closeHaxhubPopupButton.addEventListener('click', () => {
-        haxhubPopup.style.display = 'none';
+document.addEventListener("DOMContentLoaded", function() {
+    const moreInfoBtn = document.getElementById("more-info");
+    const scriptsBtn = document.getElementById("scripts");
+    const haxHubPaidBtn = document.getElementById("haxhub-paid");
+    const closePopupBtn = document.getElementById("close-popup");
+    const closeHaxHubPopupBtn = document.getElementById("close-haxhub-popup");
+    const popup = document.getElementById("popup");
+    const haxHubPopup = document.getElementById("haxhub-popup");
+
+    moreInfoBtn.addEventListener("click", function() {
+        popup.style.display = "block";
     });
 
-    scriptListItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const script = item.getAttribute('data-script');
-            navigator.clipboard.writeText(script).then(() => {
-                const originalText = item.textContent;
-                item.textContent = 'Copied!';
-                setTimeout(() => {
-                    item.textContent = originalText;
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-        });
+    scriptsBtn.addEventListener("click", function() {
+        popup.style.display = "block";
+    });
+
+    haxHubPaidBtn.addEventListener("click", function() {
+        haxHubPopup.style.display = "block";
+    });
+
+    closePopupBtn.addEventListener("click", function() {
+        popup.style.display = "none";
+    });
+
+    closeHaxHubPopupBtn.addEventListener("click", function() {
+        haxHubPopup.style.display = "none";
+    });
+
+    // Add event listener to close popup when clicking outside of it
+    window.addEventListener("click", function(event) {
+        if (event.target == popup) {
+            popup.style.display = "none";
+        }
+        if (event.target == haxHubPopup) {
+            haxHubPopup.style.display = "none";
+        }
     });
 });
