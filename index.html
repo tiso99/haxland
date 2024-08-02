@@ -1,81 +1,554 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta name="keywords" content='SwagMode, Premium, Prem, Da Hood, Scripts'>
+    <meta name="description" content='Welcome to SwagMode, Keep upto date on our releases and get the link to our community server.'>
+    <meta name="author" content='Lerkermer'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>➥ 𝘏𝘈𝘟 𝘓𝘢𝘯𝘥</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <meta charset="UTF-8">
+
+    <title>SwagMode</title>
+    <link rel="icon" type="image/x-icon" href="./images/favicon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./assets/css/global.css"> 
+    <link rel="stylesheet" href="./assets/css/index.css"> 
+    <script src="./assets/js/index.js"></script>
+
 </head>
-<body>
-    <header>
-        <div class="header-content">
-            <h1 class="animate__animated animate__fadeInDown">➥ 𝘏𝘈𝘟 𝘓𝘢𝘯𝘥</h1>
-            <div class="login-button">
-                <a href="https://discord.com/oauth2/authorize?client_id=1268444356701065258&response_type=code&redirect_uri=https%3A%2F%2Ftiso99.github.io%2Fhaxland%2Findex.html&scope=identify+guilds">Login with Discord</a>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <link rel="stylesheet" href="./assets/css/header.css"> 
+    <script src="./assets/js/header.js"></script>
+
+    
+    <header id='header'>
+        <button class="hide-button" id="dropdown-hamburger"><img alt="hamburger_logo" draggable='false' class='left' src="./images/buttons/hamburger.png"></img></button>
+        <button class="hide-button"><img id="x-hamburger" alt="hamburger_logo" draggable='false' class='left' src="./images/buttons/X.png"></img></button>
+
+        <div id="backdrop-hamburger">
+            <div id='hamburger-frame'>
+                <div class='generalContainer'>Navigate
+                    <a href='./'>Home</a>
+                    <a href='./dashboard'>Dashboard</a>
+                </div>
+                <div class='premiumContainer'>Premium
+                    <a href='./premium?page=purchase'>Purchase</a>
+                    <a href='./dashboard?open=managePremium'>Transfer</a>
+                    <a href='./termsOfService'>TOS</a>
+                </div>
+                <div class='supportContainer'>Support
+                    <a href='https://discord.gg/Swaggest'>Report</a>
+                    <a href='https://discord.gg/Swaggest'>Unban Appeal</a>
+                    <a href='https://discord.gg/Swaggest'>Contact Us</a>
+                    <a href='https://discord.gg/Swaggest'>Discord Server</a>
+                </div>
+            </div>
+        </div>
+
+        <img id='swagmodeTitle' src="./images/SwagModeTEXT.png" alt="SwagmMode_logo" draggable='false'></img>
+        <script>
+            document.getElementById('swagmodeTitle').addEventListener('click', function(){
+                window.location.href = './'
+            })
+        </script>
+
+        <div id="underline"></div>
+
+        <button class="hide-button" id="dropdown-profile"><img alt="profile_logo" draggable='false' class='right' src="./images/buttons/person.png"></img></button>
+        <button class="hide-button"><img id="x-profile" alt="close_profile" draggable='false' class='right' src="./images/buttons/X.png"></img></button>
+        <div id="backdrop-profile">
+            <div id='login-frame'>
+                <div class='login-container'>
+                    <div class='title'>Login</div>
+                    <br>
+                    <form action="./api/login" method="POST">
+                        <label for='username'>Username</label>
+                        <input type="text" id="username-input" name="username"></input>
+
+                        <label for="password">Password</label>
+                        <input type="password" id="password-input" name="password"></input>
+                            
+                        <button id="submitButton" type='submit'><span id='loginText'>Login</span>
+                            <div class='loadingAnimation' id='loginLoading'>
+                                <div class="loadingBox"></div>
+                                <div class="loadingBox"></div>
+                                <div class="loadingBox"></div>
+                            </div>
+                        </button>
+
+                        <div id="errorMessage">Login failed message here</div>
+                        <p>Forgot your password?, <span id='resetPasswordHeader'>Reset Password</span></p>
+                        <script>
+                            document.getElementById('resetPasswordHeader').addEventListener('click', function() {
+                                window.location.href = './register?open=resetPassword'
+                            })
+                        </script>
+                    </form>
+                </div>
+                <script>
+                    const loginButton = document.getElementById('submitButton');
+                    const loginLoading = document.getElementById('loginLoading');
+                    const loginText = document.getElementById('loginText');
+                    const errorMessage = document.getElementById('errorMessage');
+
+                    let timeout
+
+                    loginButton.addEventListener('click', function(event){
+                        event.preventDefault();
+
+                        if (loginLoading.style.opacity === '1'){
+                            return;
+                        }
+
+                        if (document.getElementById('username-input').value == '' || document.getElementById('password-input').value == ''){
+                            errorMessage.style.display = 'block';
+                                errorMessage.textContent = 'Fill out both fields.';
+
+                                clearTimeout(timeout)
+
+                                timeout = setTimeout(() => {
+                                    errorMessage.style.display = 'none';
+                                }, 3000);
+                            return;
+                        }
+
+                        loginLoading.style.opacity = '1';
+                        loginText.textContent = 'ㅤ';
+                        loginButton.style.backgroundColor = 'rgba(0,0,0,0)';
+
+                        let formData = new FormData();
+
+                        formData.append('username', document.getElementById('username-input').value);
+                        formData.append('password', document.getElementById('password-input').value);
+
+                        fetch('./api/login', {
+                            method: "POST",
+                            body: formData
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.text().then(errorData => {
+                                    throw new Error(errorData);
+                                });
+                            }
+                            return response.text();
+                        })
+                        .then(data => {
+                            console.log(data)
+                            if (data.includes('error') || data.includes('Incorrect') || data.includes('Trying too quickly')) {
+                                console.log('ERROR')
+
+                                loginLoading.style.opacity = '0';
+                                loginText.textContent = 'Login';
+                                loginButton.style.backgroundColor = '#0e0e0e';
+                                errorMessage.style.display = 'block';
+                                errorMessage.textContent = data;
+
+                                clearTimeout(timeout)
+
+                                timeout = setTimeout(() => {
+                                    errorMessage.style.display = 'none';
+                                }, 3000);
+                            } else if (data.includes('Success')) {
+                                console.log('Successfully Logged in')
+
+                                window.location.href = './index';
+                                loginLoading.style.opacity = '0';
+                                loginText.textContent = 'Login';
+                                loginButton.style.backgroundColor = '#0e0e0e';
+
+                                const registerFrame = document.getElementsByClassName('register-container')[0];
+                                const loginFrame = document.getElementsByClassName('login-container')[0];
+                                const loggedInGreeting = document.getElementsByClassName('loggedIn-Greeting')[0];
+                                const loggedInButtons = document.getElementsByClassName('loggedIn-Buttons')[0];
+
+                                registerFrame.style.display = 'none'
+                                loginFrame.style.display = 'none'
+                                loggedInButtons.style.display = 'block'
+                                loggedInGreeting.style.display = 'flex'
+
+                            }
+                        })
+
+                    });
+
+                </script>
+
+                <div class='OR_register'></div>
+                <div class='register-container'>
+                    <div class='title'>Register</div>
+                    <p>Don't have an account yet?, register for free</p>
+                    <button id='register'>Register</button>
+
+                    <script>
+                        const registerButton = document.getElementById('register');
+                        registerButton.addEventListener('click', function(event){
+                            window.location.href = "./register";
+                        });
+                    </script>
+                </div>
+                <div class='loggedIn-Greeting'>
+                    <div id='welcome-username' class='title centerText'>Welcome, Username</div>
+                    <div id='permissions' class='subTitle'>Rank: Swagmodian</div>
+                    <img id='avatarIcon' alt='avatarIcon' src='./images/buttons/AvatarIcon.png'></img>
+                    <div id='logout' class='logoutText'>Not you?, <span id='logoutButton'>Logout</span></div>
+
+                    <script>
+                        const logoutButton = document.getElementById('logoutButton');
+                        
+                        logoutButton.addEventListener('click', function(){
+                            fetch('./assets/php/logout', {
+                                method: "POST",
+                            })
+                            .then(response=>{
+                                console.log(response.text());
+                                if (response.ok) {
+                                    const registerFrame = document.getElementsByClassName('register-container')[0];
+                                    const loginFrame = document.getElementsByClassName('login-container')[0];
+                                    const loggedInGreeting = document.getElementsByClassName('loggedIn-Greeting')[0];
+                                    const loggedInButtons = document.getElementsByClassName('loggedIn-Buttons')[0];
+
+                                    registerFrame.style.display = 'flex'
+                                    loginFrame.style.display = 'flex'
+                                    loggedInButtons.style.display = 'none'
+                                    loggedInGreeting.style.display = 'none'
+                                }
+
+
+                            })
+                        })
+                    </script>
+                </div>
+                <div class='loggedIn-Buttons'>
+                    <ul>
+                        <li id='headerUpgradeButton'>Upgrade</li>
+                        <li id='headerDashboardButton'>Dashboard</li>
+
+                        <script>
+                            document.getElementById('headerDashboardButton').addEventListener('click', function() {
+                                window.location.href = './dashboard'
+                            })
+                        </script>
+                    </ul>
+                </div>
             </div>
         </div>
     </header>
-    <section class="intro animate__animated animate__fadeInUp">
-        <h2>Welcome to ➥ 𝘏𝘈𝘟 𝘓𝘢𝘯𝘥</h2>
-        <p>Home of the coolest Roblox scripts to find!</p>
-    </section>
-    <section class="main-content">
-        <div class="card premium animate__animated animate__zoomIn">
-            <h3>Freebies</h3>
-            <a href="#" id="more-info">More Info</a>
-            <a href="#" id="scripts">Scripts</a>
+
+
+    <div class='alertHolder'>
+
+    </div>
+
+    <script>
+        function alertUser(Success, Message, setTime) {
+
+            var countdown = 5;
+            if (setTime) {
+                countdown = setTime;
+            }
+
+            var alertHolder = document.querySelector('.alertHolder');
+            var alertDiv = document.createElement('div');
+            alertDiv.classList.add('defaultAlert');
+            var alertMessage = document.createElement('p');
+            alertMessage.textContent = Message;
+            var closeButton = document.createElement('button');
+            closeButton.textContent = 'Close (' + countdown + 's)';
+
+            var timer = setInterval(() => {
+                countdown--;
+                closeButton.textContent = 'Close (' + countdown + 's)';
+                if (countdown <= 0){
+                    clearInterval(timer);
+                    closeButton.click();
+                }
+            }, 1000);
+
+            if (Success) {
+                alertDiv.id = 'successAlert';
+            } else {
+                alertDiv.id = 'failAlert';
+            }
+
+            alertDiv.appendChild(alertMessage);
+            alertDiv.appendChild(closeButton);
+
+            alertHolder.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.style.opacity = '1'
+                alertDiv.style.transform = 'translateY(0)'
+            }, 10)
+
+
+            let CLOSED = false
+            closeButton.addEventListener('click', function(){
+                if (CLOSED) {
+                    return;
+                }
+
+                alertDiv.style.transition = 'transform 0.2s ease-in-out, opacity 0.2s ease-in-out';
+                alertDiv.style.opacity = '0'
+                alertDiv.style.transform = 'translateY(-10px)'
+                setTimeout(() => {
+                    alertHolder.removeChild(alertDiv);
+                }, 200)
+            })
+        }
+    </script>
+
+    </head>
+</html>
+
+<script>
+            console.log("Not logged in");
+        </script>
+
+
+<body id='body'>
+    <div id='blur-container'>
+        <div class='big-display'>
+            <div id='main-content'>
+                <div class="big-text">SwagMode</div>
+                <div class="medium-text">Safely executed over <span id="green-glow">5,000,000</span> times.</div>
+                <div class='link-holder'>
+                    <button id='getScript'>Get Script ➤</button>
+                    <button id='openFeatures'>Features ➤</button>
+
+                    <script>
+                        const getScript = document.getElementById('getScript');
+                        const openFeatures = document.getElementById('openFeatures');
+
+                        getScript.addEventListener('click', function() {
+                            if (!onCooldown) {
+                                onCooldown = true;
+
+                                scriptPopup.style.opacity = 1;
+                                scriptPopup.style.zIndex = 1;
+
+                                setTimeout(() => {
+                                    onCooldown = false;
+                                }, 300)
+                            }
+                        })
+
+                        openFeatures.addEventListener('click', function() {
+                            if (!onCooldown) {
+                                onCooldown = true;
+
+                                featuresPopup.style.opacity = 1;
+                                featuresPopup.style.zIndex = 1;
+
+                                setTimeout(() => {
+                                    onCooldown = false;
+                                }, 300)
+                            }
+                        })
+                    </script>
+                </div>
+                <div class='img-holder'><img alt="ScriptDemo" draggable='false' src="./images/background/CurvedSwagModeScript.png"></img></div>
+            </div>
         </div>
-        <div class="card dashboard animate__animated animate__zoomIn">
-            <h3>HaxHub -- Paid</h3>
-            <a href="#" id="haxhub-paid">More Info</a>
+        <div class="split-display">
+            <div class='premium-content' id="premium-transform">
+                <img alt="Premium_logo" draggable='false' src="./images/SwagModePremium.png"></img>
+                <div class='link-holder2'>
+                    <button id='moreInfo'>More Info ➤</button>
+                    <button id='purchasePremium'>Purchase ➤</button>
+                    <script>
+                         document.getElementById('moreInfo').addEventListener('click', function() {
+                            window.location.href = './premium?open=info'
+                         })   
+                         document.getElementById('purchasePremium').addEventListener('click', function() {
+                            window.location.href = './premium'
+                         })   
+                    </script>
+                </div>
+            </div>
+            <div class='dashboard-content' id="dashboard-transform">
+                <img alt="Premium_logo" draggable='false' src="./images/SwagModeDashboard.png"></img>
+                <div class='link-holder2'>
+                    <button id='visit-dashboard' style="width:250px">Visit Dashboard ➤</button>
+                    <script>
+                        document.getElementById('visit-dashboard').addEventListener('click',function(){
+                            console.log('redirecting')
+                            window.location.href = './dashboard'
+                        })
+                    </script>
+                </div>
+            </div>
         </div>
-    </section>
-    <section class="announcements">
-        <h2 class="animate__animated animate__fadeInUp">Announcements</h2>
-        <div class="announcement-items">
-            <div class="announcement-item animate__animated animate__fadeInLeft">
-                <h3>Discord</h3>
-                <p>Join the discord! <a href="https://discord.gg/haxland">https://discord.gg/haxland</a></p>
-            </div>
-            <div class="announcement-item animate__animated animate__fadeInRight">
-                <h3>Website is Public</h3>
-                <p>If you are seeing this that means the website is live! Here will be announcements and updates on the website.</p>
-            </div>
-            <div class="announcement-item animate__animated animate__fadeInLeft">
-                <h3>Website Update</h3>
-                <p>Added scripts + stuff</p>
-            </div>
-            <div class="announcement-item animate__animated animate__fadeInRight">
-                <h3>Hi there fella</h3>
-                <p>Erm what the sigma..</p>
+        <div class='big-display2'>
+            <div id='second-content'>
+                <img id="announcement-title" alt="Announcements" draggable="false" src="./images/Announcements.png"></img>
+                <div id="announcement-line"></div>
+
+                <div id="announcement-holder">
+                <script>console.log('Fetching announcements from database');</script><div id='announcement'><div id='announcement-content'><div id='title'>Website is Public <span class='announcement-id'>[29]</span></div><div id='posted-by'>@Lerkermer <span id='make-white'> | </span><span id='posted-on'>2024-05-12</span></div><div id='announce-line'></div><div id='description'>I apologize for all the unfinished stuff, I had to get the website posted for a SwagMode update, but besides that I hope you enjoy the new refreshed look of the website.<br />
+<br />
+Automated purchases and transfers will be releasing when registering becomes open </div></div></div><div id='announcement'><div id='announcement-content'><div id='title'>Website Update <span class='announcement-id'>[28]</span></div><div id='posted-by'>@Lerkermer <span id='make-white'> | </span><span id='posted-on'>2024-02-23</span></div><div id='announce-line'></div><div id='description'>- Ranking player works<br />
+- No longer need to .php website links<br />
+<br />
+Premium auto purchase and management coming next</div></div></div><div id='announcement'><div id='announcement-content'><div id='title'>Also <span class='announcement-id'>[27]</span></div><div id='posted-by'>@Lerkermer <span id='make-white'> | </span><span id='posted-on'>2024-02-17</span></div><div id='announce-line'></div><div id='description'>your account information loads in Your account page</div></div></div><div id='announcement'><div id='announcement-content'><div id='title'>Website Update <span class='announcement-id'>[26]</span></div><div id='posted-by'>@Lerkermer <span id='make-white'> | </span><span id='posted-on'>2024-02-17</span></div><div id='announce-line'></div><div id='description'>- Reset passwords is functional<br />
+- Terms of service is functional<br />
+- Dashboard redirect if not logged in</div></div></div><div id='announcement'><div id='announcement-content'><div id='title'>New Update <span class='announcement-id'>[23]</span></div><div id='posted-by'>@lerkermer <span id='make-white'> | </span><span id='posted-on'>2024-02-14</span></div><div id='announce-line'></div><div id='description'>- Some more QOL stuff<br />
+- Manage whitelist works completely as well as some api stuff so it can be done remotely<br />
+- Login is still the same as provided in discord</div></div></div><div id='announcement'><div id='announcement-content'><div id='title'>Small QOL Update <span class='announcement-id'>[22]</span></div><div id='posted-by'>@lerkermer <span id='make-white'> | </span><span id='posted-on'>2024-02-14</span></div><div id='announce-line'></div><div id='description'>- Added some small cosmetic changes to dashboard, this includes mobile</div></div></div><div id='announcement'><div id='announcement-content'><div id='title'>Website Update <span class='announcement-id'>[21]</span></div><div id='posted-by'>@lerkermer <span id='make-white'> | </span><span id='posted-on'>2024-02-13</span></div><div id='announce-line'></div><div id='description'>- Fixed some mobile design things<br />
+- Added cache systems<br />
+- Popups now hide under the blur</div></div></div><div id='announcement'><div id='announcement-content'><div id='title'>Hi <span class='announcement-id'>[20]</span></div><div id='posted-by'>@lerkermer <span id='make-white'> | </span><span id='posted-on'>2024-02-11</span></div><div id='announce-line'></div><div id='description'>Forogififkgih</div></div></div><div id='announcement'><div id='announcement-content'><div id='title'>Testing <span class='announcement-id'>[19]</span></div><div id='posted-by'>@lerkermer <span id='make-white'> | </span><span id='posted-on'>2024-02-11</span></div><div id='announce-line'></div><div id='description'>Super good test</div></div></div><div id='announcement'><div id='announcement-content'><div id='title'>Website Preview <span class='announcement-id'>[18]</span></div><div id='posted-by'>@Lerkermer <span id='make-white'> | </span><span id='posted-on'>2024-02-11</span></div><div id='announce-line'></div><div id='description'>Dashboard Title is working<br />
+Login is working<br />
+Full mobile support? - smoother transitions are coming for mobile stuff</div></div></div>
+                    <!--
+                    <div id="announcement">
+                        <div id="announcement-content">
+                            <div id='title'>1Website Release!</div>
+                            <div id='posted-by'>@Lerkermer <span id="make-white"> | </span><span id="posted-on">10/7/23</span></div>
+                            <div id='announce-line'></div>
+                            <div id="description">This is the description, this is the description, this really is the description lolol trolled</div>
+                        </div>
+                    </div>
+                    -->
+                </div>
+                <div class='scrollController'>
+                    <div id='scrollLeft'></div>
+                    <div id='scrollRight'></div>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
+</body>
+
+<div id='scriptPopup'>
+    <div id='scriptText'>loadstring(game:HttpGet('https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002'))()</div>
+    <div id='scriptButtons'>
+        <button id='downloadScript'>Download</button>
+        <button id='copyScript'>Copy</button>
+    </div>
+    <button id='closeScript'>Close</button>
+
+    <script>
+        const scriptPopup = document.getElementById('scriptPopup');
+        const downloadScript = document.getElementById('downloadScript');
+        const copyScript = document.getElementById('copyScript');
+        const closeScript = document.getElementById('closeScript');
+        let onCooldown = false
+
+        copyScript.addEventListener('click',function() {
+            const textarea = document.createElement('textarea');
+            textarea.value = "loadstring(game:HttpGet('https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002'))()";
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            copyScript.textContent = 'Copied!'
+            alertUser(true, 'Successfully Copied Link', 3)
+                    
+            setTimeout(() => {
+                copyScript.textContent = 'Copy'
+            }, 2500)
+        })
+
+        downloadScript.addEventListener('click',function() {
+            const textContent = "loadstring(game:HttpGet('https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002'))()";
+            const blob = new Blob([textContent], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'SwagMode.txt';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        })
+
+        closeScript.addEventListener('click', function() {
+            if (!onCooldown) {
+                onCooldown = true;
+
+                scriptPopup.style.opacity = 0;
+
+                setTimeout(() => {
+                    onCooldown = false;
+                    scriptPopup.style.zIndex = -1;
+                }, 300)
+            }
+         })
+    </script>
+
+    <p>Supported Games</p>
+    <div id='supportedGames'>
+        <img alt="DaHood" draggable='false' src="./images/supportedgames/DaHood.png"></img>
+    </div>
+</div>
+
+<div id='featuresPopup'>
+    <p id="showingFeatures">Showing features for Da Hood</p>
+    <div id="gameButtons">
+        <button id='dahoodOpen'>Da Hood</button>
+    </div>
+    <div class='featuresHolder' id='dahoodFeatures'>
+        <h1>Mobile Support</h1>
+        <h2>Built from the ground up too support mobile devices</h2>
+
+        <h1>Aimlock</h1>
+        <h2>Advanced aimlock custom made for Da Hood with many customizable features too fit you perfectly</h2>
+
+        <h1>Target Players</h1>
+        <h2>Advanced prediction methods will allow you too easily end other players with a variety of methods just as LoopKilling, Flinging or even Bagging them</h2>
+
+        <h1>Quick Buy</h1>
+        <h2>A large array of items at your fingertips to purchase with the click of a button, you can also use the /e buy command</h2>
+
+        <h1>Quick TP</h1>
+        <h2>Quickly travel the map with predetermined locations, or even create your own locations and save them for later</h2>
+
+        <h1>Buff Yourself</h1>
+        <h2>Boost your experience by making yourself faster or flying around the map and much much more inside the script</h2>
+    </div>
+
+    <button id='closeFeatures'>Close</button>
+
+    <script>
+        const closeFeatures = document.getElementById('closeFeatures');
+        const featuresPopup = document.getElementById('featuresPopup');
+
+        closeFeatures.addEventListener('click', function() {
+            if (!onCooldown) {
+                onCooldown = true;
+                featuresPopup.style.opacity = 0;
+
+                setTimeout(() => {
+                    onCooldown = false;
+                    featuresPopup.style.zIndex = -1;
+                }, 300)
+            }
+        })
+    </script>
+</div>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./assets/css/footer.css"> 
+    <script src="./assets/js/header.js"></script>
+
     <footer>
-        <p>&copy; 2024 𝘏𝘈𝘟 𝘓𝘢𝘯𝘥, by Hax Designs</p>
+        <div class='footerContent'>
+            <img src="./images/SwagModeTEXT.png" alt="SwagMode_logo" draggable='false'></img>
+            <p>Copyright © 2024 SwagMode, By Lerkermer</p>
+        </div>
     </footer>
 
-    <div class="popup" id="popup">
-        <h3>Scripts List</h3>
-        <ul id="script-list">
-            <li data-script="loadstring(game:HttpGet('https://raw.githubusercontent.com/Actyrn/Scripts/main/AzureModded'))()">Azure Modded</li>
-            <li data-script="Test">Copies Test</li>
-            <li data-script="Test">Copies Test</li>
-        </ul>
-        <div class="buttons">
-            <button class="close" id="close-popup">Close</button>
-        </div>
-    </div>
-
-    <div class="popup" id="haxhub-popup">
-        <h3>HaxHub -- Paid</h3>
-        <p>HaxHub is the hub YOU need with tons of features. We have more features to come so stay tuned!</p>
-        <div class="buttons">
-            <a href="https://discord.gg/haxland" class="btn" id="haxhub-link">Buy HaxHub -- Make A Ticket</a>
-            <button class="close" id="close-haxhub-popup">Close</button>
-        </div>
-    </div>
-
-    <script src="scripts.js"></script>
-</body>
+    </head>
+</html>
 </html>
